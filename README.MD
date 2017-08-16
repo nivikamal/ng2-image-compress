@@ -1,5 +1,8 @@
 # ng2-image-compress
 
+ng2-image-compress
+
+######This  compresses jpeg or png files using Angular 2/4 on client side. It uses using HTML5 Canvas & File API. The compression algorithm is based off of the angular-image-compress, ng-image-compress and J-I-C project on github.
 ## Installation
 
 To install this library, run:
