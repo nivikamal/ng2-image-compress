@@ -20,19 +20,34 @@ export class AppComponent {
     
 
     let images: Array<IImage> = [];
-
     
-    let _files: File[];
-    let count = fileInput.target.files.length;    
-    let observer = ImageUtilityService.filesToSourceImages(fileInput.target.files);     
-    observer.subscribe((image) => {
-        images.push(image);         
-    },null,()=>{
-      console.log(images)
-      ImageCompressService.IImageListToCompressedImageSource(images).then(imagesResult=>{
-        this.processedImages = imagesResult;  
-      })
-    });  
+        
+        let _files: File[];
+       
+        let count = fileInput.target.files.length;    
+        let observer = ImageUtilityService.filesToSourceImages(fileInput.target.files);     
+        observer.subscribe((image) => {
+            images.push(image);         
+        },null,()=>{
+          console.log(images)
+          var files:IImage[] = images;
+          let image_files:IImage[] = [];
+          let nonImage_files:IImage[] = [];
+          for (var i = 0; i < files.length; i++) {
+            if(String(files[i].imageDataUrl).toUpperCase().indexOf("DATA:IMAGE/PNG;")!== -1 ||
+            String(files[i].imageDataUrl).toUpperCase().indexOf("DATA:IMAGE/JPEG;")!== -1){
+              image_files.push(files[i]);
+            }
+            else{
+              nonImage_files.push(files[i]);
+            }        
+         };    
+          ImageCompressService.IImageListToCompressedImageSource(images).then(imagesResult=>{
+            this.processedImages = imagesResult;  
+          })
+        });  
+
+
     
 
      // or you can use methods from      
