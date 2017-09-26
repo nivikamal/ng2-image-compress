@@ -3,7 +3,7 @@
 
 Build and Test
 
-Rename Dot.angular-cli.json  to .angular-cli.json
+# *****  Rename   Dot.angular-cli.json  to .angular-cli.json  ****
 
 ## Development server
 Run 'npm install'
