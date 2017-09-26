@@ -246,10 +246,12 @@
                    <div class="content-data">
 
 <h1 id="ng2-image-compress">ng2-image-compress</h1>
+<p>ng2-image-compress</p>
+<h6 id="ng2-image-compress-service-is-used-to-compress-jpeg-or-png-files-on-client-side-browser-it-uses-using-html5-canvas-file-api-the-compression-algorithm-is-based-on-libraries-angular-image-compress-ng-image-compress-and-j-i-c-project-on-github-">ng2-image-compress service is used to compress jpeg or png files on client side browser. It uses using HTML5 Canvas &amp; File API. The compression algorithm is based on   libraries angular-image-compress, ng-image-compress and J-I-C project on github.</h6>
 <h2 id="installation">Installation</h2>
 <p>To install this library, run:</p>
-<pre class="line-numbers"><code class="language-bash">$ npm install ng2-image-compress --save</code></pre><h2 id="consuming-your-library">Consuming your library</h2>
-<p>Once you have published your library to npm, you can import your library in any Angular application by running:</p>
+<pre class="line-numbers"><code class="language-bash">$ npm install ng2-image-compress --save</code></pre><h2 id="consuming-ng2-image-compress-library">Consuming ng2-image-compress library</h2>
+<p>You can import ng2-image-compress in your Angular application by running:</p>
 <pre class="line-numbers"><code class="language-bash">$ npm install ng2-image-compress</code></pre><p>and then from your Angular <code>AppModule</code>:</p>
 <pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
 import { NgModule } from &#39;&#64;angular/core&#39;;
@@ -257,31 +259,101 @@ import { NgModule } from &#39;&#64;angular/core&#39;;
 import { AppComponent } from &#39;./app.component&#39;;
 
 // Import your library
-import { SampleModule } from &#39;ng2-image-compress&#39;;
+import { ImageCompressService,ResizeOptions,ImageUtilityService } from &#39;ng2-image-compress&#39;;
 
 &#64;NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule,
-
-    // Specify your library as an import
-    LibraryModule
+    BrowserModule
   ],
-  providers: [],
+  providers: [ImageCompressService,ResizeOptions],
   bootstrap: [AppComponent]
 })
-export class AppModule { }</code></pre><p>Once your library is imported, you can use its components, directives and pipes in your Angular application:</p>
-<pre class="line-numbers"><code class="language-xml">&lt;!-- You can now use your library component in app.component.html --&gt;
-&lt;h1&gt;
-  {{title}}
-&lt;/h1&gt;
-&lt;sampleComponent&gt;&lt;/sampleComponent&gt;</code></pre><h2 id="development">Development</h2>
-<p>To generate all <code>*.js</code>, <code>*.d.ts</code> and <code>*.metadata.json</code> files:</p>
-<pre class="line-numbers"><code class="language-bash">$ npm run build</code></pre><p>To lint all <code>*.ts</code> files:</p>
+
+export class AppModule { }</code></pre><p>Once your library is imported, you can use its components, directives  in your Angular application:</p>
+<pre class="line-numbers"><code class="language-xml">&lt;!-- Example  app.component.html --&gt;
+&lt;!-- &lt;h2&gt;Here are some links to help you start: &lt;/h2&gt;
+  &lt;input id=&quot;testid&quot; type=&quot;file&quot; accept=&quot;image/*&quot; multiple  ng2-image-compress  /&gt;  --&gt;
+&lt;div&gt; 
+   &lt;input id=&quot;inputImage&quot; type=&quot;file&quot; accept=&quot;image/*&quot; (change)=&quot;onChange($event)&quot; multiple /&gt;
+  &lt;b *ngIf=&quot;showTitle&quot;&gt;Original Image List&lt;/b&gt;
+
+  &lt;div *ngFor=&quot;let item of processedImages&quot;&gt;
+    &lt;img src=&quot;{{item.imageDataUrl}}&quot; height=&quot;800&quot; width=&quot;1000&quot;&gt;
+  &lt;/div&gt;
+
+  &lt;b *ngIf=&quot;showTitle&quot; &gt;Compressed Image List&lt;/b&gt;
+  &lt;div *ngFor=&quot;let item of processedImages&quot;&gt;
+    &lt;img src=&quot;{{item.compressedImage.imageDataUrl}}&quot; height=&quot;800&quot; width=&quot;1000&quot;&gt;
+  &lt;/div&gt; 
+&lt;/div&gt;</code></pre><!-- Example  app.component.ts -->
+<pre class="line-numbers"><code class="language-typescript">
+import { Component } from &#39;&#64;angular/core&#39;;
+import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from  &#39;ng2-image-compress&#39;;
+
+&#64;Component({
+  selector: &#39;app-root&#39;,
+  templateUrl: &#39;./app.component.html&#39;,
+  styleUrls: [&#39;./app.component.css&#39;] 
+
+})
+export class AppComponent {
+  title = &#39;app&#39;;
+  selectedImage: any;
+  processedImages: any = [];
+  showTitle: boolean = false;
+
+  constructor(private imgCompressService: ImageCompressService) {
+
+  }
+  onChange(fileInput: any) {
+    let fileList: FileList;
+
+    let images: Array&lt;IImage&gt; = [];
+
+    ImageCompressService.filesToCompressedImageSource(fileInput.target.files).then(observableImages =&gt; {
+      observableImages.subscribe((image) =&gt; {
+        images.push(image);
+      }, (error) =&gt; {
+        console.log(&quot;Error while converting&quot;);
+      }, () =&gt; {
+                this.processedImages = images;      
+                this.showTitle = true;          
+      });
+    });
+
+    // or you can pass File[] 
+    let files = [];
+    Array.from(fileInput.target.files).forEach(fileItem=&gt;{
+      files.push(fileItem);
+    })
+
+    ImageCompressService.filesArrayToCompressedImageSource(files).then(observableImages =&gt; {
+      observableImages.subscribe((image) =&gt; {
+        images.push(image);
+      }, (error) =&gt; {
+        console.log(&quot;Error while converting&quot;);
+      }, () =&gt; {
+                this.processedImages = images;      
+                this.showTitle = true;          
+      });
+    });
+
+
+  }
+
+}
+
+## Development
+
+To generate all `*.js`, `*.d.ts` and `*.metadata.json` files:
+
+```bash
+$ npm run build</code></pre><p>To lint all <code>*.ts</code> files:</p>
 <pre class="line-numbers"><code class="language-bash">$ npm run lint</code></pre><h2 id="license">License</h2>
-<p>MIT © <a href="mailto:nivikamal@gmail.co">Kamal Kumar</a></p>
+<p>MIT © <a href="mailto:nivikamal@gmail.com">Kamal Kumar</a></p>
 
 
 

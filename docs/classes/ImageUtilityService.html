@@ -382,6 +382,38 @@
                             </tr>
                         </tbody>
                     </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> filesArrayToSourceImages</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play "></span>
+                                    <code>filesArrayToSourceImages(fileList: [])</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/imageUtilityService.ts:42</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>Observable&lt;&gt;</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
             </section>
 
 
@@ -429,6 +461,23 @@ export class ImageUtilityService {
             });
         });
     }
+
+    public static filesArrayToSourceImages(fileList: File[]): Observable&lt;IImage&gt; {
+        
+                return Observable.create((observer: Observer&lt;IImage&gt;) &#x3D;&gt; {
+                    let total &#x3D; fileList.length;
+                    fileList.forEach(fileItem &#x3D;&gt; {
+                        let imageResult: IImage &#x3D; new SourceImage();
+                        imageResult.imageObjectUrl &#x3D; URL.createObjectURL(fileItem);
+                        ImageUtilityService.fileToDataURL(fileItem).then((result) &#x3D;&gt; {
+                            imageResult.imageDataUrl &#x3D; result;
+                            observer.next(imageResult);
+                            if (--total &#x3D;&#x3D;&#x3D; 0)
+                                observer.complete();
+                        });
+                    });
+                });
+            }
 }
 </code></pre>
     </div>

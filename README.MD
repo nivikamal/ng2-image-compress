@@ -2,7 +2,7 @@
 
 ng2-image-compress
 
-######This  compresses jpeg or png files using Angular 2/4 on client side. It uses using HTML5 Canvas & File API. The compression algorithm is based off of the angular-image-compress, ng-image-compress and J-I-C project on github.
+###### ng2-image-compress service is used to compress jpeg or png files on client side browser. It uses using HTML5 Canvas & File API. The compression algorithm is based on   libraries angular-image-compress, ng-image-compress and J-I-C project on github.
 ## Installation
 
 To install this library, run:
@@ -11,9 +11,9 @@ To install this library, run:
 $ npm install ng2-image-compress --save
 ```
 
-## Consuming your library
+## Consuming ng2-image-compress library
 
-Once you have published your library to npm, you can import your library in any Angular application by running:
+You can import ng2-image-compress in your Angular application by running:
 
 ```bash
 $ npm install ng2-image-compress
@@ -44,7 +44,7 @@ import { ImageCompressService,ResizeOptions,ImageUtilityService } from 'ng2-imag
 export class AppModule { }
 ```
 
-Once your library is imported, you can use its components, directives and pipes in your Angular application:
+Once your library is imported, you can use its components, directives  in your Angular application:
 
 ```xml
 <!-- Example  app.component.html -->
@@ -101,7 +101,22 @@ export class AppComponent {
                 this.showTitle = true;          
       });
     });
+
+    // or you can pass File[] 
+    let files =    Array.from(fileInput.target.files);
+
+    ImageCompressService.filesArrayToCompressedImageSource(files).then(observableImages => {
+      observableImages.subscribe((image) => {
+        images.push(image);
+      }, (error) => {
+        console.log("Error while converting");
+      }, () => {
+                this.processedImages = images;      
+                this.showTitle = true;          
+      });
+    });
  
+
   }
 
 }
@@ -122,4 +137,4 @@ $ npm run lint
 
 ## License
 
-MIT © [Kamal Kumar](mailto:nivikamal@gmail.co)
+MIT © [Kamal Kumar](mailto:nivikamal@gmail.com)

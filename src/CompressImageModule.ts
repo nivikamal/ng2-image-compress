@@ -8,16 +8,6 @@ import { ImageUtilityService } from './imageUtilityService';
 @NgModule({
     imports: [
         CommonModule
-    ],
-    declarations: [
-        ResizeOptions,
-        SourceImage,
-        ImageCompressService, ImageUtilityService
-    ],
-    exports: [
-        ResizeOptions,
-        ImageCompressService,
-        ImageUtilityService
     ]
 })
 export class ImageCompressModule {

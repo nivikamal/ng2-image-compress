@@ -382,6 +382,38 @@
                             </tr>
                         </tbody>
                     </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> filesArrayToCompressedImageSource</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play "></span>
+                                    <code>filesArrayToCompressedImageSource(fileList: [])</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/ImageCompressService.ts:85</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>Promise&lt;&gt;</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
             </section>
 
 
@@ -472,6 +504,25 @@ export class ImageCompressService {
             });
         });
     }
+
+    public static filesArrayToCompressedImageSource(fileList: File[]): Promise&lt;Observable&lt;IImage&gt;&gt; {
+        
+                return new Promise&lt;Observable&lt;IImage&gt;&gt;((resolve, reject) &#x3D;&gt; {
+                    let count &#x3D; fileList.length;
+                    let observer &#x3D; ImageUtilityService.filesArrayToSourceImages(fileList);
+                    let images: Array&lt;IImage&gt; &#x3D; [];
+                    observer.subscribe((image) &#x3D;&gt; {
+                        images.push(image);
+                        ImageCompressService.compressImage(image, new ResizeOptions(), (imageRef) &#x3D;&gt; {
+                            if (--count &#x3D;&#x3D; 0) {
+                                resolve(Observable.from(images));
+                            }
+                        });
+                    }, (error) &#x3D;&gt; {
+                        reject(&quot;Error while compressing images&quot;);
+                    })
+                });
+            }
 }
 </code></pre>
     </div>
