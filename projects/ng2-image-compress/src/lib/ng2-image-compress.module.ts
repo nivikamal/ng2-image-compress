@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,ModuleWithProviders  } from '@angular/core';
 import { ImageUtilityService } from "./imageutilityservice"
 import { ImageCompressService } from "./ng2-image-compress.service"
 
@@ -9,5 +9,10 @@ import { ImageCompressService } from "./ng2-image-compress.service"
 })
 export class ImageCompressModule { 
 
-
+  static forRoot(): ModuleWithProviders {
+    return {
+        ngModule: ImageCompressModule,
+        providers: [ImageCompressService, ImageUtilityService]
+    };
+}
 }
