@@ -1,3 +1,10 @@
+
+
+***NOTE***
+For Angular 4: use  Version  1.0.17 
+For all other version use 1.0.19 or 7.0.X version
+
+
 # ng2-image-compress
 
 
