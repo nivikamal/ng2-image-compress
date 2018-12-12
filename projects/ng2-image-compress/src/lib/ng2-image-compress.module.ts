@@ -1,5 +1,5 @@
 import { NgModule,ModuleWithProviders  } from '@angular/core';
-import { ImageUtilityService } from "./imageutilityservice"
+import { ImageUtilityService } from "./ImageUtilityService"
 import { ImageCompressService } from "./ng2-image-compress.service"
 
 @NgModule({
